@@ -2,6 +2,7 @@ package com.bolsadeideas.springboot.backend.apirest.controllers;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,13 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bolsadeideas.springboot.backend.apirest.models.entity.Venta;
 import com.bolsadeideas.springboot.backend.apirest.models.services.IVentaService;
 
-
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api")
 public class VentaRestController {
 
-@Autowired private IVentaService service;
+	@Autowired
+	private IVentaService service;
 
 	@GetMapping("/ventas")
 	public List<Venta> index() {
@@ -32,8 +33,8 @@ public class VentaRestController {
 	}
 
 	@GetMapping("/ventas/{id}")
-	public Venta show(@PathVariable Long id) {
-		return this.service.findById(id);
+	public Optional<Venta> show(@PathVariable Long id) {
+		return this.service.findById(id).orElse(new Throwable("No se encontro la venta"));
 	}
 
 	@PostMapping("/ventas")
